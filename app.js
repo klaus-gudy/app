@@ -27,8 +27,8 @@ form_div.className = 'form-group p-2';
 form.appendChild(form_div);
 
 const text_input = document.createElement('input');
-text_input.className = 'val';
 text_input.setAttribute('type','text');
+text_input.setAttribute('id','task');
 text_input.setAttribute('placeholder', 'enter a book name');
 form_div.appendChild(text_input);
 
@@ -43,11 +43,25 @@ const unli = document.createElement('ul');
 unli.className = 'list-group';
 card_div.appendChild(unli);
 
-const li = document.createElement('li');
-li.className = 'list-group-item d-flex justify-content-between align-items-center';
-li.innerText = 'list';
-unli.appendChild(li);
 
-const span = document.createElement('span');
+
+loadEventListeners();
+
+function loadEventListeners(){
+    form.addEventListener('submit', addTask);
+}
+
+function addTask(e){
+    if(text_input.value === ''){alert("add a task")};
+
+    const li = document.createElement('li');
+    li.className = 'list-group-item d-flex justify-content-between align-items-center';
+    li.appendChild(document.createTextNode(text_input.value));
+    const span = document.createElement('span');
 span.innerHTML = '<i class="fas fa-trash"></i>';
-li.appendChild(span);
+    li.appendChild(span);
+    unli.appendChild(li)
+
+
+    e.preventDefault();
+}

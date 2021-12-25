@@ -58,9 +58,11 @@ function addTask(e){
     li.className = 'list-group-item d-flex justify-content-between align-items-center';
     li.appendChild(document.createTextNode(text_input.value));
     const span = document.createElement('span');
-span.innerHTML = '<i class="fas fa-trash"></i>';
+    span.innerHTML = '<i class="fas fa-trash"></i>';
     li.appendChild(span);
     unli.appendChild(li)
+
+    text_input.value = "";
 
 
     e.preventDefault();

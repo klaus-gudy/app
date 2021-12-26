@@ -43,27 +43,46 @@ const unli = document.createElement('ul');
 unli.className = 'list-group';
 card_div.appendChild(unli);
 
-
+const clear_button = document.createElement('button');
+clear_button.className = 'btn btn-secondary';
+clear_button.setAttribute('id', 'clear');
+clear_button.setAttribute('type', 'submit');
+clear_button.innerText = 'clear';
+container_div.appendChild(clear_button);
 
 loadEventListeners();
 
 function loadEventListeners(){
     form.addEventListener('submit', addTask);
+    unli.addEventListener('click', removeTask);
+    clear_button.addEventListener('click', clearAll);
+
 }
 
 function addTask(e){
-    if(text_input.value === ''){alert("add a task")};
-
+    if(text_input.value === ''){alert("add a task")}else{
     const li = document.createElement('li');
     li.className = 'list-group-item d-flex justify-content-between align-items-center';
     li.appendChild(document.createTextNode(text_input.value));
     const span = document.createElement('span');
+    span.className = 'delete-item';
     span.innerHTML = '<i class="fas fa-trash"></i>';
     li.appendChild(span);
     unli.appendChild(li)
 
-    text_input.value = "";
+    text_input.value = "";}
 
 
     e.preventDefault();
+}
+
+function removeTask(e){
+    if(e.target.parentElement.classList.contains('delete-item'))
+    {e.target.parentElement.parentElement.remove() ;}
+}
+
+function clearAll(){
+    while(unli.firstChild){
+        unli.removeChild(unli.firstChild);
+    }
 }

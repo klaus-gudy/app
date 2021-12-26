@@ -53,6 +53,7 @@ container_div.appendChild(clear_button);
 loadEventListeners();
 
 function loadEventListeners(){
+    document.addEventListener('DOMContentLoaded', getTasks);
     form.addEventListener('submit', addTask);
     unli.addEventListener('click', removeTask);
     clear_button.addEventListener('click', clearAll);
@@ -70,6 +71,9 @@ function addTask(e){
     li.appendChild(span);
     unli.appendChild(li)
 
+    //store in local  storage
+    storeInLocalStorage(text_input.value);
+
     text_input.value = "";}
 
 
@@ -78,11 +82,75 @@ function addTask(e){
 
 function removeTask(e){
     if(e.target.parentElement.classList.contains('delete-item'))
-    {e.target.parentElement.parentElement.remove() ;}
+    {
+        e.target.parentElement.parentElement.remove();
+
+        //remove tasks from storage
+        removeLocalStorage(e.target.parentElement.parentElement);
+    }
 }
 
 function clearAll(){
     while(unli.firstChild){
         unli.removeChild(unli.firstChild);
     }
+
+    clearAllFromLocalStorage();
+}
+
+function storeInLocalStorage(task){
+    let tasks;
+    if(localStorage.getItem('tasks') === null){
+        tasks = []; 
+    }else{
+        //in local storage things stay as strings 
+        //we get them using json object
+        tasks = JSON.parse(localStorage.getItem('tasks'));
+    }
+
+    tasks.push(task);
+
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+function getTasks(){
+    let tasks;
+    if(localStorage.getItem('tasks') === null){
+        tasks = []; 
+    }else{
+        tasks = JSON.parse(localStorage.getItem('tasks'));
+    }
+
+    //show every task on storage
+    tasks.forEach(task => {
+        const li = document.createElement('li');
+    li.className = 'list-group-item d-flex justify-content-between align-items-center';
+    li.appendChild(document.createTextNode(task));
+    const span = document.createElement('span');
+    span.className = 'delete-item';
+    span.innerHTML = '<i class="fas fa-trash"></i>';
+    li.appendChild(span);
+    unli.appendChild(li)
+    });
+}
+
+function removeLocalStorage(taskitem){
+    let tasks;
+    if(localStorage.getItem('tasks') === null){
+        tasks = []; 
+    }else{
+        tasks = JSON.parse(localStorage.getItem('tasks'));
+    }
+
+    tasks.forEach(function(task, index){
+        if(taskitem.textContent === task){
+            tasks.splice(index, 1)
+        }
+    });
+
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+} 
+
+function clearAllFromLocalStorage(){
+    localStorage.clear();
 }

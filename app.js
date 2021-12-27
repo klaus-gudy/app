@@ -1,3 +1,4 @@
+// SELECTORS
 const container_div = document.getElementById('cont');
 
 const h1_header = document.createElement('h1');
@@ -50,23 +51,25 @@ clear_button.setAttribute('type', 'submit');
 clear_button.innerText = 'clear';
 container_div.appendChild(clear_button);
 
+// LOADING EVENT LISTENERS
 loadEventListeners();
 
 function loadEventListeners(){
-    document.addEventListener('DOMContentLoaded', getTasks);
+    document.addEventListener('DOMContentLoaded', getTasks); //when using local storage after refreshing
     form.addEventListener('submit', addTask);
     unli.addEventListener('click', removeTask);
     clear_button.addEventListener('click', clearAll);
 
 }
 
+// FUNCTIONS
 function addTask(e){
     if(text_input.value === ''){alert("add a task")}else{
     const li = document.createElement('li');
-    li.className = 'list-group-item d-flex justify-content-between align-items-center';
+    li.className = 'list-group-item d-flex justify-content-between align-items-center'; // li.classList.add("list-group-item");
     li.appendChild(document.createTextNode(text_input.value));
     const span = document.createElement('span');
-    span.className = 'delete-item';
+    span.className = 'delete-item';    
     span.innerHTML = '<i class="fas fa-trash"></i>';
     li.appendChild(span);
     unli.appendChild(li)
@@ -74,9 +77,9 @@ function addTask(e){
     //store in local  storage
     storeInLocalStorage(text_input.value);
 
-    text_input.value = "";}
+    text_input.value = "";} //remove input words after submitting
 
-
+    //prevent form from submitting
     e.preventDefault();
 }
 
@@ -100,11 +103,12 @@ function clearAll(){
 
 function storeInLocalStorage(task){
     let tasks;
+    // check if there is something in local storage 
     if(localStorage.getItem('tasks') === null){
         tasks = []; 
     }else{
         //in local storage things stay as strings 
-        //we get them using json object
+        //we get them using json object turns into array
         tasks = JSON.parse(localStorage.getItem('tasks'));
     }
 
@@ -113,6 +117,7 @@ function storeInLocalStorage(task){
     localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
+//the stored values wont be diplay.....lets grab them
 function getTasks(){
     let tasks;
     if(localStorage.getItem('tasks') === null){
@@ -123,7 +128,7 @@ function getTasks(){
 
     //show every task on storage
     tasks.forEach(task => {
-        const li = document.createElement('li');
+    const li = document.createElement('li');
     li.className = 'list-group-item d-flex justify-content-between align-items-center';
     li.appendChild(document.createTextNode(task));
     const span = document.createElement('span');

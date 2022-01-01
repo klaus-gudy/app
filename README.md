@@ -1,2 +1,2 @@
 # app
-implementing some javascripts
+implementing some javascripts begginers level ajax , function , event listeners, ajax, json files, api fetching
